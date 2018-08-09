@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#python train.py -data_name default -epoch_size 7 -opt_type Adam -remove_models -gpuid 1
+#python train.py -save_name default -epoch_size 7 -opt_type Adam -remove_models -gpuid 1
 import chainer
 from chainer import cuda
 import chainer.functions as F
@@ -42,10 +42,10 @@ if __name__ == '__main__':
     Read_global_options(opt)
     np.random.seed(opt.seed)
 
-    file = open("data/" + opt.data_name + ".data", 'rb')
+    file = open("data/" + opt.save_name + ".data", 'rb')
     dataset = pickle.load(file)
 
-    file = open("data/" + opt.data_name + ".vocab_dict", 'rb')
+    file = open("data/" + opt.save_name + ".vocab_dict", 'rb')
     vocab_dict = pickle.load(file)
 
     use_gpu = opt.gpuid >= 0
@@ -65,7 +65,7 @@ if __name__ == '__main__':
     chainer.config.train = True
     folder_name = "Results/"
 
-    file_subname =  opt.data_name + "." +opt.encoder+"_"+opt.decoder
+    file_subname =  opt.save_name + "." +opt.encoder+"_"+opt.decoder
 
     print("Save model as: ",file_subname)
 

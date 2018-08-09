@@ -7,8 +7,8 @@ from tqdm import tqdm
 from train import NMT  # Import Foo into main_module's namespace explicitly
 
 # src_test=/cl/work/takashi-w/ASPEC-JE/test/test.txt.tok.low.ja
-# model_name=default.encoder_decoder_epoch3
-# python translate.py -model_name $model_name -src_test $src_test
+# model=default.encoder_decoder_epoch3
+# python translate.py -model $model -src_test $src_test
 
 
 parser = argparse.ArgumentParser()
@@ -24,10 +24,10 @@ parser.add_argument(
     required=True,
     help='source test data path')
 parser.add_argument(
-    '-model_name',
+    '-model',
     type=str,
     required=True,
-    help='model_name')
+    help='model path')
 parser.add_argument(
     '-beam_size',
     type=int,
@@ -53,13 +53,13 @@ parser.add_argument(
 
 
 class Translator(chainer.Chain):
-    def __init__(self, encoder, decoder, id2vocab, model_name):
+    def __init__(self, encoder, decoder, id2vocab, model):
         super().__init__()
         with self.init_scope():
             self.encoder = encoder
             self.decoder = decoder
             self.id2vocab = id2vocab
-            self.model_name = model_name
+            self.model = model
 
     def translate_base(self, s_id, s_lengths, beam_size, normalize, *args):
         EOS_id = 0
@@ -105,7 +105,7 @@ class Translator(chainer.Chain):
             translation = translation_list[i]
             translation = " ".join([tgt_id2vocab[word_id] for word_id in translation])
             translation_word.append(translation)
-            with open(self.model_name + ".translation.txt", "a") as output:
+            with open(self.model + ".translation.txt", "a") as output:
                 output.write(translation + "\n")
         return translation_word
 
@@ -115,9 +115,9 @@ class Translator(chainer.Chain):
             translation_list = topk_translation[i][0:k]
             for sentence in translation_list:
                 translation = " ".join([tgt_id2vocab[word_id] for word_id in sentence])
-                with open(self.model_name + ".translation_top"+str(k)+".txt", "a") as output:
+                with open(self.model + ".translation_top"+str(k)+".txt", "a") as output:
                     output.write(translation + "\n")
-            with open(self.model_name + ".translation_top"+str(k)+".txt", "a") as output:
+            with open(self.model + ".translation_top"+str(k)+".txt", "a") as output:
                 output.write('\n')
 
     def save_attn_weight(self, s_id, translation_word, attn_wight):
@@ -137,14 +137,14 @@ class Translator(chainer.Chain):
             ax.set_xticklabels(x_labels, rotation=90)
             ax.set_yticklabels(y_labels, rotation=0)
             plt.tight_layout()
-            plt.savefig(self.model_name+ ".attn_W" + str(k) + ".pdf")
+            plt.savefig(self.model+ ".attn_W" + str(k) + ".pdf")
             plt.close('all')
 
         merger = PdfFileMerger() #merge all pdfs into one file
         for k in range(len(s_id)):
-            merger.append(open(self.model_name+ ".attn_W" + str(k) + ".pdf", 'rb'))
-            os.remove(self.model_name+ ".attn_W" + str(k) + ".pdf")
-        with open(self.model_name+ ".attn_W.pdf", 'wb') as fout:
+            merger.append(open(self.model+ ".attn_W" + str(k) + ".pdf", 'rb'))
+            os.remove(self.model+ ".attn_W" + str(k) + ".pdf")
+        with open(self.model+ ".attn_W.pdf", 'wb') as fout:
             merger.write(fout)
 
 
@@ -161,7 +161,7 @@ if __name__ == '__main__':
 
     print("beam_size: ",opt.beam_size)
     print("normalize: ",opt.normalize)
-    file = open(opt.model_name, 'rb')
+    file = open(opt.model, 'rb')
     model = pickle.load(file)
     test_lines, test_lines_id, test_sent_length = Convert_word2id(opt.src_test, model.vocab2id[0])
     model.to_cpu()
@@ -174,6 +174,6 @@ if __name__ == '__main__':
         for i in range(len(test_lines_id)):
             test_lines_id[i] = to_gpu(test_lines_id[i])  # list of xp.array
 
-    translator = Translator(model.encoder,model.decoder, model.id2vocab, opt.model_name)
+    translator = Translator(model.encoder,model.decoder, model.id2vocab, opt.model)
     translator.translate(test_lines_id, test_sent_length, opt.beam_size, opt.normalize,
                         opt.out_attention_weight, opt.k)

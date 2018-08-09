@@ -82,7 +82,7 @@ global_train_parser.add_argument(
     help='encoder model name')
 
 global_train_parser.add_argument(
-    '-data_name',
+    '-save_name',
     type=str,
     help='data name')
 
