@@ -62,7 +62,7 @@ After pre-processing, you can train an NMT model as follows:
 python train.py -save_name save_name -epoch_size 10 -opt_type Adam -gpuid 0 
 ```
 
-This file outputs a trained model in "Results" directory at every epoch. If development data is given, perplexity (ppl) on the data is calculated at every epoch; the value of ppl is described in the model name. Enable -remove_models option to keep only the model that has achieved the best perplexity on development data. If you omit -gpuid option, CPU is used instead. For other options, use -h option and see usage messages. 
+This file outputs a trained model in "Results" directory at every epoch. If development data is given, perplexity (ppl) on the data is calculated at every epoch. The value of ppl is described in the model name. Enable -remove_models option to keep only the model that has achieved the best perplexity on development data. If you omit -gpuid option, CPU is used instead. For other options, use -h option and see usage messages. 
 
 Once training is done, you can select a model and translate test data as follows:
 
