@@ -5,10 +5,6 @@ An attention-based neural machine translation model.[Luong et al., 2015]
 ## About
 This software is a python3 implementation of attention-based neural machine translation (NMT) model proposed by [Luong et al., 2015]. As a neural network toolkit, it mainly uses Chainer.
 
-## Demo
-
-## VS. 
-
 ## Requirement
 
 - python3
