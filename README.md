@@ -38,7 +38,13 @@ If you want to output attention weight heat map during test, you also need
 
 ## Usage
 
-First, you need to preprocess a raw parallel corpus using Preprocess.py. 
+First, you need to preprocess a raw parallel corpus using Preprocess.py. To build vocabulary, you provide one of these three options:
+
+- srcV and tgtV
+- src_min and tgt_min
+- src_vocab and -tgt_vocab
+
+
 
 ```
 python Preprocess.py -src_train source_train_path -tgt_train target_train_path -save_name save_name 
