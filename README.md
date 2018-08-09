@@ -11,7 +11,7 @@ This software is a python3 implementation of attention-based neural machine tran
 
 ## Requirement
 
-This code is designed only for python3, not python2
+- python3
 
 To run the models, you need following packages
 
@@ -30,7 +30,7 @@ If you use GPU, you also need
 
 - cupy
 
-If you want to output attention weight heat map during test, we also need
+If you want to output attention weight heat map during test, you also need
 
 - matplotlib
 - seaborn
