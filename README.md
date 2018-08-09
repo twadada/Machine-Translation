@@ -40,7 +40,7 @@ First, you need to preprocess a raw parallel corpus using Preprocess.py. To run 
 - -srcV and -tgtV (default: None)
 - -src_vocab and -tgt_vocab (default: None)
 
-The first options specify the size of source and target vocabulary. The second options specify the cutoff word frequency; that is, only the words that appear at least the cutoff times in train data are included in vocabulary. In the last options, you can pass the paths of vocabulary files (.txt) that contain a word in vocabulary line by line.
+The first options specify the size of source and target vocabulary. The second options specify the cutoff word frequency; that is, only the words that appear at least the cutoff times in train data are included in vocabulary. In the last options, you can pass the paths of vocabulary files (.txt) that contain each word in vocabulary line by line.
 
 To preprocess train and development files, run the followings
 
@@ -51,10 +51,7 @@ python Preprocess.py -src_train source_train_path -tgt_train target_train_path -
 This outputs "data/save_name.data" and "data/save_name.vocab_dict". These files are to be used during training/testing.
 
 
-If you do not have development data, you can omit src_dev and tgt_dev options; however, it is highly recommended to prepare these data to train models efficiently.
-
-
-By enabling -output_vocab, it also outputs source and target vocabulary txt files.
+If you do not have development data, you can omit -src_dev and -tgt_dev options. However, it is highly recommended to prepare these data to train models and select the best one. If you want source and target vocabulary txt files, enable -output_vocab.
 
 
 After processing the data, you can train an NMT model as follows:
@@ -63,16 +60,16 @@ After processing the data, you can train an NMT model as follows:
 python train.py -save_name save_name -epoch_size 10 -opt_type Adam -gpuid 0 
 ```
 
-If you omit -gpuid option, CPU is used instead. This file outputs a model in "Results" directory at every epoch. Enable -remove_models option to keep only the model that has achieved the best perplexity on development data. For other options, use -h option and see usage messages.
+If you omit -gpuid option, CPU is used instead. This file outputs a trained model in "Results" directory at every epoch. Enable -remove_models option to keep only the model that has achieved the best perplexity on development data. For other options, use -h option and see usage messages.
 
 
 Once training is done, you can select a model and translate test data as follows:
 
 ```
-python translate.py -model model_path -src_test test_data_path -gpuid 0 -beam_size 5
+python translate.py -model model_path -src_test test_data_path -gpuid 0 -beam_size 5 
 ```
 
-This outputs translations as "model_path.translation.txt". 
+This outputs translations as "model_path.translation.txt". You can increase the beam size as you want. However, it is known that output translations tend to be shorter and shorter as beam size increases. To mitigate this issue, you can set -normalize option, that normalizes decoding probabilities by sentence length
 
 If you want to output top k translation candidates for each source sentence, set the option -k larger than 0 (default:0), and it produces another file "model_path.translation_topk.txt". 
 
