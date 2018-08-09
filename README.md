@@ -3,7 +3,7 @@
 An attention-based neural machine translation model.[Luong et al., 2015]
 
 ## About
-This software is a python3 implementation of attention-based neural machine translation (NMT) model proposed by [Luong et al., 2015]. As a neural network toolkit, it uses Chainer. For the attention mechanism, we use general attention.  
+This software is a python3 implementation of attention-based neural machine translation (NMT) model proposed by [Luong et al., 2015]. More specifically, it uses bidirectional LSTMs as an encoder and a single LSTM as a decoder. For the attention mechanism, we use general attention. As a neural network toolkit, it uses Chainer.
 
 ## Requirement
 
@@ -75,6 +75,6 @@ If you want to output top k translation candidates for each source sentence, set
 If you want to output attention weight heat map, enable -out_attention_weight. Then, another file "model_path.attn_W.pdf" is generated that illustrates attention weight for each translation.
 
 ## Author
-Takashi Wada
+Takashi Wada, M.S. student at Nara Institute of Science and Technology (NAIST)
 ## Reference
 Minh-Thang Luong, Hieu Pham, and Christopher D. Manning. 2015. "Effective approaches to attentionbased neural machine translation." In Empirical Methods in Natural Language Processing (EMNLP), pages 1412–1421, Lisbon, Portugal. Association for Computational Linguistics.
