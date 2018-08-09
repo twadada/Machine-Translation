@@ -4,7 +4,7 @@ import argparse
 import chainer
 from models.preprocessing import Convert_word2id
 from tqdm import tqdm
-from train import NMT  # Import Foo into main_module's namespace explicitly
+from train import NMT
 
 # src_test=/cl/work/takashi-w/ASPEC-JE/test/test.txt.tok.low.ja
 # model=default.encoder_decoder_epoch3
