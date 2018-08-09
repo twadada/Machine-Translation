@@ -36,7 +36,7 @@ If you want to output attention weight heat map during test, you also need
 
 ## Usage
 
-First, you need to pre-process train and development data using Preprocess.py. To run this file, set one of these three pairs of options:
+First, you need to pre-process train and development data using preprocess.py. To run this file, set one of these three pairs of options:
 
 - -src_min and -tgt_min (default: 5)
 - -srcV and -tgtV (default: None)
@@ -47,7 +47,7 @@ The first options specify the cutoff word frequency; that is, only the words tha
 For instance, run the followings:
 
 ```
-python Preprocess.py -src_train source_train_path -tgt_train target_train_path -src_dev source_development_path -tgt_dev target_development_path -save_name save_name -src_min 7 -tgt_min 5
+python preprocess.py -src_train source_train_path -tgt_train target_train_path -src_dev source_development_path -tgt_dev target_development_path -save_name save_name -src_min 7 -tgt_min 5
 ```
 
 This outputs "data/save_name.data" and "data/save_name.vocab_dict". These files are to be used during training/testing. If you also want to output source and target vocabulary txt files, enable -output_vocab.
