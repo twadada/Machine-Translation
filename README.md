@@ -69,7 +69,7 @@ Once training is done, you can select a model and translate test data as follows
 python translate.py -model model_path -src_test test_data_path -gpuid 0 -beam_size 5 
 ```
 
-This outputs translations as "model_path.translation.txt". You can increase the beam size as you want. However, it is known that output translations tend to be shorter and shorter as beam size increases. To mitigate this issue, you can set -normalize option, that normalizes decoding probabilities by sentence length
+This outputs translations as "model_path.translation.txt". You can increase the beam size as you want. However, it is known that output translations tend to be shorter and shorter as beam size increases. To mitigate this issue, you can set -normalize option, that divides decoding probabilities by sentence length during beam search.
 
 If you want to output top k translation candidates for each source sentence, set the option -k larger than 0 (default:0), and it produces another file "model_path.translation_topk.txt". 
 
