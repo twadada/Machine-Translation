@@ -3,7 +3,7 @@
 Chainer-based implementation of neural machine translation model with attention mecanism.[Luong et al., 2015]
 
 ## About
-This software is a Chainer-based implementation of a neural machine translation (NMT) model with attention mechanism proposed by [Luong et al., 2015]. More specifically, it uses bidirectional LSTMs as an encoder and a single LSTM as a decoder. For the attention mechanism, it uses general attention. Sentence length is kept the same in each mini-batch to avoid padding.
+This software is a Chainer-based implementation of a neural machine translation (NMT) model with attention mechanism. More specifically, it uses bidirectional LSTMs as an encoder and a single LSTM as a decoder. For the attention mechanism, it uses general attention proposed by [Luong et al., 2015]. Sentences of the same length are grouped into each mini-batch to avoid padding.
 
 ## Requirement
 
