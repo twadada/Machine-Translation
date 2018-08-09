@@ -1,15 +1,8 @@
 import os
-import matplotlib
-matplotlib.use('Agg')
-font = {'family': 'IPAexGothic'}
-matplotlib.rc('font', **font)
 import pickle
 import argparse
 import chainer
 from models.preprocessing import Convert_word2id
-import seaborn as sns
-import matplotlib.pyplot as plt
-from PyPDF2 import PdfFileMerger
 from tqdm import tqdm
 from train import NMT  # Import Foo into main_module's namespace explicitly
 
@@ -157,6 +150,15 @@ class Translator(chainer.Chain):
 
 if __name__ == '__main__':
     opt = parser.parse_args()
+    if(opt.k):
+        import matplotlib
+        matplotlib.use('Agg')
+        font = {'family': 'IPAexGothic'}
+        matplotlib.rc('font', **font)
+        import seaborn as sns
+        import matplotlib.pyplot as plt
+        from PyPDF2 import PdfFileMerger
+
     print("beam_size: ",opt.beam_size)
     print("normalize: ",opt.normalize)
     file = open(opt.model_name, 'rb')
