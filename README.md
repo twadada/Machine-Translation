@@ -1,6 +1,6 @@
 # Machine-Translation
 
-An attention-based neural machine translation model.[Luong et al., 2015]
+Chainer implementation of an attention-based neural machine translation model.[Luong et al., 2015]
 
 ## About
 This software is a python3 implementation of attention-based neural machine translation (NMT) model proposed by [Luong et al., 2015]. More specifically, it uses bidirectional LSTMs as an encoder and a single LSTM as a decoder. For the attention mechanism, it uses general attention. Sentence length is kept the same in each mini-batch to avoid padding. As a neural network toolkit, it uses Chainer.
@@ -15,7 +15,7 @@ To run the models, you need following packages
 
 - os
 - numpy
-- chainer
+- chainer (version > 2.0)
 - pickle
 - argparse
 - tqdm
