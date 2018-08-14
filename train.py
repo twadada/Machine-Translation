@@ -59,6 +59,11 @@ if __name__ == '__main__':
             dataset.lines_id[0][i] = to_gpu(dataset.lines_id[0][i])  # list of xp.array
             dataset.lines_id[1][i] = to_gpu(dataset.lines_id[1][i])  # list of xp.array
 
+        if (dataset.lines_id_dev[0] !=[]): #if development data has been given
+            for i in range(len(dataset.lines_id_dev[0])):
+                dataset.lines_id_dev[0][i] = to_gpu(dataset.lines_id_dev[0][i])  # list of xp.array
+                dataset.lines_id_dev[1][i] = to_gpu(dataset.lines_id_dev[1][i])  # list of xp.array
+
     else:
         xp = np
 

@@ -22,7 +22,7 @@ def Update_params_default(model, dataset, index):
 def Calc_Dev_loss_default(model,dataset):
     cum_loss = 0
     with chainer.no_backprop_mode(), chainer.using_config('train', False):
-        for k in range(len(dataset.src_lines_id_DEV)):
+        for k in range(len(dataset.lines_id_dev[0])):
             softmax_score = model([dataset.lines_id_dev[0][k]],
                               [dataset.lengths_dev[0][k]],
                               [dataset.lines_id_dev[1][k][:-1]],
@@ -168,7 +168,7 @@ class Train():
 
             if(use_dev_data):
                 self.Entropy_new = self.Calc_Dev_loss(model, self.dataset)
-                self.Entropy_new = self.Entropy_new / float(len(self.dataset.src_lines_id_DEV))
+                self.Entropy_new = self.Entropy_new / float(len(self.dataset.lines_id_dev[0]))
                 print("cross entropy", self.Entropy_old, self.Entropy_new)
                 model_name = self.folder_name + self.file_subname + \
                              "_epoch" + str(epoch) + "_ppl_" + str(round(self.Entropy_new, 3))

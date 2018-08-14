@@ -1,14 +1,15 @@
 import pickle
 import argparse
+import warnings
 import os
 from models.preprocessing import Dataset,Build_Vocab, Register_wordID, Vocab_dict
 
 # src_train=/cl/work/takashi-w/ASPEC-JE/train/train-1.txt.tok.low.clean.ja
-# src_dev=/cl/work/takashi-w/ASPEC-JE/train/train-1.txt.tok.low.clean.ja
+# src_dev=/cl/work/takashi-w/ASPEC-JE/dev/dev.txt.tok.low.ja
 # tgt_train=/cl/work/takashi-w/ASPEC-JE/train/train-1.txt.tok.low.clean.en
-# tgt_dev=/cl/work/takashi-w/ASPEC-JE/train/train-1.txt.tok.low.clean.en
-# python Preprocess2.py -src_train $src_train -tgt_train $tgt_train
-
+# tgt_dev=/cl/work/takashi-w/ASPEC-JE/dev/dev.txt.tok.low.en
+# python preprocess.py -src_train $src_train -tgt_train $tgt_train -src_dev $src_dev -tgt_dev $tgt_dev
+#
 parser = argparse.ArgumentParser()
 
 parser.add_argument(
@@ -81,9 +82,6 @@ parser.add_argument(
 opt = parser.parse_args()
 
 if __name__ == '__main__':
-    if (opt.data_name == "default"):
-        if (opt.srcV != None or opt.tgtV != None or opt.src_min != 5 or opt.tgt_min != 5):
-            raise Exception("this is not the default settting")
 
     vocab_srctgt = [opt.src_vocab, opt.tgt_vocab]
     train_srctgt = [opt.src_train, opt.tgt_train]
@@ -95,7 +93,7 @@ if __name__ == '__main__':
         if(dev_srctgt[0] is not None or dev_srctgt[1] is not None):
             raise Exception("When you provide development data, both source and target corpora must be given.")
         else:
-            print("no development data are provided; it is highly recommended to provide one for model selection")
+            warnings.warn("no development data are provided; it is highly recommended to provide one for model selection")
     dataset = Dataset()
     vocab_dict = Vocab_dict()
     for i in range(2):#process src and tgt corpus
@@ -117,9 +115,11 @@ if __name__ == '__main__':
     dataset.add_EOS_BOS() #add EOS and BOS to tgt_lines
 
 
-    assert len(dataset.lines_id[0]) == len(dataset.lines_id[1])
-    if(None not in dev_srctgt):
-        assert len(dataset.lines_id_dev[0]) == len(dataset.lines_id_dev[1])
+    if len(dataset.lines_id[0]) != len(dataset.lines_id[1]):
+        raise Exception("Number of sentences in source and target train corpora is different!")
+
+    if(None not in dev_srctgt and len(dataset.lines_id_dev[0]) != len(dataset.lines_id_dev[1])):
+        raise Exception("Number of sentences in source and target development corpora is different!")
 
     print("srcV: ", dataset.V_size[0])
     print("tgtV: ", dataset.V_size[1])
@@ -131,6 +131,7 @@ if __name__ == '__main__':
     if not os.path.exists("data"):
         os.makedirs("data")
 
+    print("saving files")
     with open("data/"+opt.data_name+ ".data", mode='wb') as f:
         pickle.dump(dataset, f)
         f.close()

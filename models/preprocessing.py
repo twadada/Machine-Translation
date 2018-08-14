@@ -5,11 +5,9 @@ import numpy as np
 
 def Convert_word2id(file, vocab2id):
     lines_id = []
-    lines = []
     sentence_len = []
     for line in open(file):
         line = line.strip('\n')
-        lines.append(line)
         line = line.split()
         sentence_len.append(len(line))
 
@@ -24,7 +22,7 @@ def Convert_word2id(file, vocab2id):
 
     sentence_len = np.array(sentence_len).astype(np.int32)
 
-    return lines, lines_id,sentence_len
+    return lines_id,sentence_len
 
 def Register_wordID(vocab_list):
     #vocab_list: list of vocabulary
@@ -80,11 +78,9 @@ class Dataset():
 
         self.V_size = []
 
-        self.lines = []
         self.lines_id = []
         self.lengths = []
 
-        self.lines_dev = []
         self.lines_id_dev = []
         self.lengths_dev = []
 
@@ -95,28 +91,23 @@ class Dataset():
             self.register_dataset(dev_file, vocab2id, False)
 
     def register_dataset(self, corpus, vocab2id, train_flag):
-        lines, lines_id, sent_length = Convert_word2id(corpus, vocab2id)
+        lines_id, sent_length = Convert_word2id(corpus, vocab2id)
         if(train_flag):
-            self.lines.append(lines)
             self.lines_id.append(lines_id)
             self.lengths.append(sent_length)
         else:
-            self.lines_dev.append(lines)
             self.lines_id_dev.append(lines_id)
             self.lengths_dev.append(sent_length)
 
-
     def add_EOS_BOS(self):
 
-        for i in range(len(self.lines[1])):
-            self.lines[1][i]   = np.append(np.append("<s>",self.lines[1][i]),"</s>")
+        for i in range(len(self.lines_id[1])):
             self.lines_id[1][i] = np.append(np.append([0],self.lines_id[1][i]),[0]).astype(np.int32)
 
         self.lengths[1] +=1
 
-        if(self.lines_dev != []):
-            for i in range(len(self.lines_dev[1])):
-                self.lines_dev[1][i] = np.append(np.append("<s>", self.lines_dev[1][i]), "</s>")
+        if(self.lines_id_dev != []):
+            for i in range(len(self.lines_id_dev[1])):
                 self.lines_id_dev[1][i] = np.append(np.append([0], self.lines_id_dev[1][i]), [0]).astype(np.int32)
             self.lengths_dev[1] += 1
 

@@ -34,7 +34,6 @@ def Shuffle_train_data(dataset):
         # shuffle training data
         sffindx = np.random.permutation(data_size)
         for i in range(2):
-            dataset.lines[i] = [dataset.lines[i][j] for j in sffindx]
             dataset.lines_id[i] = [dataset.lines_id[i][j] for j in sffindx]
             dataset.lengths[i] = dataset.lengths[i][sffindx]
 
